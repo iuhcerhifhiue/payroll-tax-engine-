@@ -1414,6 +1414,20 @@
       consoleView.classList.remove('on');
       sectionNav.classList.remove('on');
       acct.classList.remove('on');
+      // Arrived from the landing-page form: signup already started, so
+      // open on the verify-code step.
+      var fromLanding = null;
+      try { fromLanding = JSON.parse(sessionStorage.getItem('omnia_pending') || 'null'); } catch (e) {}
+      if (fromLanding && fromLanding.email) {
+        try { sessionStorage.removeItem('omnia_pending'); } catch (e) {}
+        pending = fromLanding;
+        document.getElementById('verifySent').textContent = fromLanding.emailSent
+          ? 'We sent a 6-digit code to ' + fromLanding.email + '. It expires in 15 minutes.'
+          : 'Code generated for ' + fromLanding.email + '. No email provider is connected yet, so it is printed in the server terminal.';
+        showStep(2);
+        document.getElementById('vCode').focus();
+        return;
+      }
       showStep(1);
       return;
     }

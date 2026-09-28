@@ -1,0 +1,11 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/api/health",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    { "name": "STRIPE_SECRET_KEY", "description": "Stripe secret key (test mode sk_test_…) — optional; without it payment setup reports no processor connected", "requiredAtBoot": false },
+    { "name": "STRIPE_PRICE_ID", "description": "Stripe usage-metered price ID (price_…) — optional", "requiredAtBoot": false },
+    { "name": "STRIPE_WEBHOOK_SECRET", "description": "Stripe webhook signing secret (whsec_…) — optional", "requiredAtBoot": false },
+    { "name": "RESEND_API_KEY", "description": "Resend API key for verification emails — optional; without it codes print to the site container logs", "requiredAtBoot": false }
+  ]
+}

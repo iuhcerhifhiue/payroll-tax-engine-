@@ -1,0 +1,27 @@
+services:
+  site:
+    image: node:22
+    working_dir: /app
+    command: node --watch-path=site --watch-path=src --watch-path=data site/server.ts
+    volumes:
+      - ./:/app
+      - site-data:/data
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      # kept outside the watched site/ dir so store writes don't restart the server
+      - SITE_DB_DIR=/data
+    env_file:
+      - path: /run/base44/app.env
+        required: false
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -m 3 http://localhost:3000/api/health >/dev/null || (echo 'site health failed' && exit 1)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+
+volumes:
+  site-data:
